@@ -42,4 +42,32 @@ class SingInUserTest extends TestCase
                 ],
             ]);
     }
+
+    /**
+     * @dataProvider provider_singin_user_incorrect_credentials
+     */
+    public function test_singin_user_should_fail_with_incorrect_credentials($email, $password)
+    {
+        User::factory()->create([
+            'password' => '123',
+            'email' => 'user@email.com'
+        ]);
+
+        $response =  $this->postJson('/api/users/singin', [
+            'email' => $email,
+            'password' => $password
+        ]);
+     
+        $response->assertStatus(401);
+    }
+
+    public function provider_singin_user_incorrect_credentials()
+    {
+
+        return [
+            ['user@email.com', 'error'],
+            ['error@email.com', '123'],
+        ];
+    }
+
 }

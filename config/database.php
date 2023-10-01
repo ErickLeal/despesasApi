@@ -40,7 +40,6 @@ return [
             'port' => env('DB_PORT'),
             'database' => env('DB_DATABASE'),
             'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD')
         ],
 
         'testdb' => [
@@ -49,7 +48,6 @@ return [
             'port' => env('DB_PORT'),
             'database' => env('DB_DATABASE_TEST'),
             'username' => env('DB_USERNAME'),
-            'password' => env('DB_PASSWORD')
         ]
 
     ],

@@ -8,7 +8,7 @@ use App\Models\User;
 class UserRepository
 {
 
-    public function getUserByEmail(String $email): User
+    public function getUserByEmail(String $email)
     {
         return User::where('email', $email)->first();
     }

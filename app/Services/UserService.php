@@ -6,7 +6,7 @@ namespace App\Services;
 use App\Http\Resources\UserCollection;
 use App\Repositorys\UserRepository;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use App\Exceptions\user\CredentialsIncorrectException;
 
 class UserService
 {
@@ -29,18 +29,11 @@ class UserService
     public function login(String $email, String $password): UserCollection
     {
         $user = $this->userRepository->getUserByEmail($email);
-        dd($user);
-        if(!$user){
-            dd("a");
-        }else{
-            dd("b");
-        }
-        $incorrectCredentials = !$user || !Hash::check($password, $user->password);
 
+        $incorrectCredentials = !$user || !Hash::check($password, $user->password);
+     
         if ($incorrectCredentials) {
-            throw ValidationException::withMessages([
-                'The provided credentials are incorrect.',
-            ]);
+            throw new CredentialsIncorrectException('The provided credentials are incorrect.');
         }
 
         return new UserCollection($user);

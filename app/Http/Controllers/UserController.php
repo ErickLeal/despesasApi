@@ -7,7 +7,7 @@ use App\Http\Requests\SingUpUserRequest;
 use App\Services\UserService;
 use Exception;
 
-use Illuminate\Validation\ValidationException;
+use App\Exceptions\user\CredentialsIncorrectException;
 use Illuminate\Database\UniqueConstraintViolationException;
 
 class UserController extends Controller
@@ -58,7 +58,7 @@ class UserController extends Controller
                 $data['email'],
                 $data['password']
             );
-        } catch (ValidationException $e) {
+        } catch (CredentialsIncorrectException $e) {
 
             return response()->json([
                 'message' => $e->getMessage()
