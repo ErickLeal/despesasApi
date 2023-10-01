@@ -3,8 +3,8 @@
 //namespace
 namespace App\Services;
 
-use App\Http\Resources\UserCollection;
-use App\Repositorys\UserRepository;
+use App\Http\Resources\UserResource;
+use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\user\CredentialsIncorrectException;
 
@@ -19,14 +19,14 @@ class UserService
     }
 
 
-    public function create(String $email, String $password, string $name): UserCollection
+    public function create(String $email, String $password, string $name): UserResource
     {
         $user = $this->userRepository->createUser($email, $password, $name);
 
-        return new UserCollection($user);
+        return new UserResource($user);
     }
 
-    public function login(String $email, String $password): UserCollection
+    public function login(String $email, String $password): UserResource
     {
         $user = $this->userRepository->getUserByEmail($email);
 
@@ -36,6 +36,6 @@ class UserService
             throw new CredentialsIncorrectException('The provided credentials are incorrect.');
         }
 
-        return new UserCollection($user);
+        return new UserResource($user);
     }
 }

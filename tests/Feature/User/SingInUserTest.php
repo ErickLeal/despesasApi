@@ -61,7 +61,7 @@ class SingInUserTest extends TestCase
         $response->assertStatus(401);
     }
 
-    public function provider_singin_user_incorrect_credentials()
+    public static function provider_singin_user_incorrect_credentials()
     {
 
         return [

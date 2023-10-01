@@ -1,7 +1,7 @@
 <?php
 
 //namespace
-namespace App\Repositorys;
+namespace App\Repositories;
 
 use App\Models\User;
 

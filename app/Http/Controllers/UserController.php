@@ -12,7 +12,7 @@ use Illuminate\Database\UniqueConstraintViolationException;
 
 class UserController extends Controller
 {
-    public $userService;
+    private $userService;
 
     public function __construct(UserService $userService)
     {
