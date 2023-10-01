@@ -1,9 +1,7 @@
-# Copyright VMware, Inc.
-# SPDX-License-Identifier: APACHE-2.0
-
 version: '2'
 
 services:
+
   mariadb:
     image: docker.io/bitnami/mariadb:11.0
     environment:
@@ -13,6 +11,11 @@ services:
       - '3307:3306'
     volumes:
       - './init.sql:/docker-entrypoint-initdb.d/init.sql'
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - '8025:8025'
   myapp:
     image: docker.io/bitnami/laravel:10
     ports:
@@ -23,7 +26,14 @@ services:
       - DB_USERNAME=myapp
       - DB_DATABASE=myappdb
       - DB_DATABASE_TEST=testdb
+      - MAIL_HOST=mailhog
+      - MAIL_PORT=1025
+      - MAIL_ENCRYPTION=null
+      - MAIL_FROM_ADDRESS=hello@example.com
+      - MAIL_FROM_NAME="${APP_NAME}"
     volumes:
       - './:/app'
     depends_on:
       - mariadb
+      - mailhog
+

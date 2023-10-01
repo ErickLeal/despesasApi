@@ -9,6 +9,7 @@ use App\Exceptions\expense\ExpenseNotFoundException;
 use App\Http\Resources\ExpenseCollection;
 use App\Http\Resources\ExpenseResource;
 use App\Repositories\ExpenseRepository;
+use App\Notifications\ExpenseCreated;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,8 @@ class ExpenseService
         $user = Auth::user();
       
         $expense = $this->expenseRepository->createExpense($description, $date, $value, $user->id);
+
+        $user->notify(new ExpenseCreated($expense));
 
         return new ExpenseResource($expense);
     }
