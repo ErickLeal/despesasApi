@@ -2,7 +2,7 @@
 
 **About docker** <br>
 Docker-compose.yml are available in the projetc: Laravel, MariaDb and Mailhog are configured. <br>
-To set the entire environment, just run: <br>
+To set the entire environment, just run:
 `docker compose up -d` <br>
 
 **About email notifications** <br>
@@ -11,7 +11,7 @@ To start the queue worker, just run inside the container: <br>
 `php artisan queue:work --queue=notifications` <br>
 
 As this is an application in a development environment, a local email server was used for testing. <br>
-To check all sent emails, simply open: <br>
+To check all sent emails, simply open:
 `http://localhost:8025/` <br>
 
 ## Postman Documentation
