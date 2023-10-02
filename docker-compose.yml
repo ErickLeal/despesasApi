@@ -16,6 +16,7 @@ services:
     image: mailhog/mailhog
     ports:
       - '8025:8025'
+
   myapp:
     image: docker.io/bitnami/laravel:10
     ports:
@@ -36,4 +37,3 @@ services:
     depends_on:
       - mariadb
       - mailhog
-

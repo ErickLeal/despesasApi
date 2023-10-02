@@ -8,13 +8,18 @@ use App\Models\User;
 use Illuminate\Support\Carbon;
 use Tests\TestCase;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ExpenseCreated;
 
 class CreateExpenseTest extends TestCase
 {
     use DatabaseMigrations;
 
-    public function test_create_expense_should_success(){
-        
+    public function test_create_expense_should_success()
+    {
+
+        Notification::fake();
+
         $user = User::factory()->create([
             'password' => '123',
             'email' => 'user@email.com'
@@ -33,10 +38,13 @@ class CreateExpenseTest extends TestCase
         $this->assertDatabaseHas('expenses', [
             'id' => $response['expense']['id']
         ]);
+
+        Notification::assertSentTo($user,ExpenseCreated::class );
     }
 
-    
-    public function test_create_expense_should_fail_without_required_fields(){
+
+    public function test_create_expense_should_fail_without_required_fields()
+    {
 
         $user = User::factory()->create([
             'password' => '123',
@@ -56,7 +64,7 @@ class CreateExpenseTest extends TestCase
         String $description,
         String $date,
         Float $value
-     ){
+    ) {
 
         $user = User::factory()->create([
             'password' => '123',
@@ -68,9 +76,9 @@ class CreateExpenseTest extends TestCase
             'date' => $date,
             'value' => $value
         ]);
-       
+
         $response->assertStatus(422)
-        ->assertJsonCount(1, "errors.$errorField");
+            ->assertJsonCount(1, "errors.$errorField");
     }
 
     public static function provider_create_expense_invalid_request()
@@ -79,9 +87,7 @@ class CreateExpenseTest extends TestCase
         return [
             ['description', Str::random(192), now()->addDays(2)->format("Y-m-d H:i:s"), 150.35],
             ['date', 'gas', now()->subDays(2)->format("Y-m-d H:i:s"), 150.35],
-            ['value','gas', now()->addDays(2)->format("Y-m-d H:i:s"), 0]
+            ['value', 'gas', now()->addDays(2)->format("Y-m-d H:i:s"), 0]
         ];
     }
-  
-
 }

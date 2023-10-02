@@ -31,7 +31,9 @@ class ExpenseService
       
         $expense = $this->expenseRepository->createExpense($description, $date, $value, $user->id);
 
-        $user->notify(new ExpenseCreated($expense));
+        dispatch(function () use ($user, $expense) {
+            $user->notify(new ExpenseCreated($expense));
+        })->onQueue('notifications');
 
         return new ExpenseResource($expense);
     }
