@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->resource('expense', ExpenseController::class);
 
+Route::resource('users', UserController::class);
+
 Route::prefix('users')->group(function () {
     Route::post('singup', [UserController::class,'singUp']);
     Route::post('singin', [UserController::class,'singIn']);

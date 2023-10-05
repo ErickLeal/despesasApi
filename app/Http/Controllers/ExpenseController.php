@@ -8,7 +8,6 @@ use App\Services\ExpenseService;
 
 use App\Exceptions\expense\ExpenseNotFoundException;
 use Exception;
-use Illuminate\Http\Request;
 
 class ExpenseController extends Controller
 {

@@ -4,9 +4,11 @@
 namespace App\Services;
 
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserCollection;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Exceptions\user\CredentialsIncorrectException;
+use App\Exceptions\user\UserNotFoundException;
 
 class UserService
 {
@@ -38,4 +40,49 @@ class UserService
 
         return new UserResource($user);
     }
+
+    public function getAllUsers(): UserCollection
+    {
+        $users = $this->userRepository->getAllUsers();
+       
+        return new UserCollection($users);
+    }
+
+    public function getOneUser(int $id): UserResource
+    {
+
+        $user = $this->getUser($id);
+
+        return new UserResource($user);
+    }
+
+    public function delete(int $id)
+    {
+        $user = $this->getUser($id);
+
+        $this->userRepository->deleteUser($user);
+    }
+
+    public function update(array $data, int $id): UserResource
+    {
+        $user = $this->getUser($id);
+
+        $expense = $this->userRepository->updateUser($user, $data);
+        
+        return new UserResource($expense);
+    }
+
+    private function getUser(int $id)
+    {
+     
+        $user = $this->userRepository->getUserById($id);
+        
+        if(!$user){
+            throw new UserNotFoundException();
+        }
+
+        return $user;
+    }
+
+
 }

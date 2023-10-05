@@ -11,11 +11,16 @@ services:
       - '3307:3306'
     volumes:
       - './init.sql:/docker-entrypoint-initdb.d/init.sql'
+    networks:
+      - expenses-api
+
 
   mailhog:
     image: mailhog/mailhog
     ports:
       - '8025:8025'
+    networks:
+      - expenses-api
 
   myapp:
     image: docker.io/bitnami/laravel:10
@@ -34,6 +39,12 @@ services:
       - MAIL_FROM_NAME="${APP_NAME}"
     volumes:
       - './:/app'
+    networks:
+      - expenses-api
     depends_on:
       - mariadb
       - mailhog
+networks:
+  expenses-api:
+    name: expenses-api
+    driver: bridge
